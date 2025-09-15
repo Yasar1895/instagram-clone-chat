@@ -1,35 +1,19 @@
-import {
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-  query,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
-import { db } from "../firebase";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-export function listenMessages(convId, callback) {
-  const q = query(
-    collection(db, "conversations", convId, "messages"),
-    orderBy("createdAt")
-  );
-  return onSnapshot(q, (snapshot) => {
-    const msgs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-    callback(msgs);
-  });
-}
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID",
+};
 
-export async function sendMessage(convId, fromId, text) {
-  await addDoc(collection(db, "conversations", convId, "messages"), {
-    from: fromId,
-    text,
-    createdAt: Date.now(),
-  });
-}
+const app = initializeApp(firebaseConfig);
 
-export async function getConversation(convId) {
-  const docRef = doc(db, "conversations", convId);
-  const snap = await getDoc(docRef);
-  return snap.exists() ? snap.data() : null;
-}
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
