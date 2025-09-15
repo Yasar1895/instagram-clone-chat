@@ -2,48 +2,45 @@ import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
-  const { login, signup } = useAuth();
-  const [isSignup, setIsSignup] = useState(false);
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (isSignup) {
-      await signup(displayName, email, password, null);
-    } else {
+    try {
+      setError("");
       await login(email, password);
+      // user will be auto-detected and App.jsx will render main UI
+    } catch {
+      setError("Failed to log in");
     }
   }
 
   return (
-    <div className="login-page">
-      <h2>{isSignup ? "Sign Up" : "Login"}</h2>
+    <div style={{ padding: 20 }}>
+      <h2>Login</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        {isSignup && (
-          <input
-            placeholder="Name"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-          />
-        )}
         <input
+          type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
+        <br />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">{isSignup ? "Sign Up" : "Login"}</button>
+        <br />
+        <button type="submit">Login</button>
       </form>
-      <p onClick={() => setIsSignup(!isSignup)} style={{ cursor: "pointer" }}>
-        {isSignup ? "Already have an account? Login" : "Don't have an account? Sign up"}
-      </p>
     </div>
   );
 }
