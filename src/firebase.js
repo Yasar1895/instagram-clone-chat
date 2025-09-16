@@ -1,19 +1,21 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getAnalytics } from "firebase/analytics";
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyD-6QPKOvsJEDLTHAteK533MAh8jRzOIqw",
+  authDomain: "insta-e5d21.firebaseapp.com",
+  databaseURL: "https://insta-e5d21-default-rtdb.firebaseio.com",
+  projectId: "insta-e5d21",
+  storageBucket: "insta-e5d21.appspot.com",
+  messagingSenderId: "949687224519",
+  appId: "1:949687224519:web:764e68a0c924cbca2916e2",
+  measurementId: "G-D41QWMLMV3"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+export default app;
